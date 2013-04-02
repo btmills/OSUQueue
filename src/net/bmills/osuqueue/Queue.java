@@ -14,11 +14,13 @@ public class Queue<E> {
 			this.value = value;
 		}
 	}
-	
+
+	private int size;
 	private Entry<E> head;
 	private Entry<E> tail;
 	
 	Queue() {
+		this.size = 0;
 		this.head = new Entry<E>(null, null, null);
 		this.tail = new Entry<E>(head, null, null);
 		this.head.next = tail;
@@ -28,6 +30,7 @@ public class Queue<E> {
 		Entry<E> entry = new Entry<E>(tail.prev, tail, value);
 		entry.prev.next = entry;
 		this.tail.prev = entry;
+		this.size++;
 	}
 	
 	public E Dequeue() {
@@ -38,6 +41,7 @@ public class Queue<E> {
 		this.head.next = first.next;
 		this.head.next.prev = this.head;
 		
+		this.size--;
 		return first.value;
 	}
 	
@@ -47,6 +51,10 @@ public class Queue<E> {
 			throw new IllegalStateException("Cannot Peek an empty queue.");
 		
 		return first.value;
+	}
+	
+	public int Size() {
+		return this.size;
 	}
 	
 }
