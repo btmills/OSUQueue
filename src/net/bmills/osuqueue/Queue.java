@@ -22,6 +22,11 @@ public class Queue<E> {
 	private Entry<E> tail;
 	private HashMap<E, Entry<E>> map;
 	
+	private void remove(Entry<E> entry) {
+		entry.prev.next = entry.next;
+		entry.next.prev = entry.prev;
+	}
+	
 	Queue() {
 		this.size = 0;
 		this.head = new Entry<E>(null, null, null);
@@ -36,8 +41,8 @@ public class Queue<E> {
 	 * Essentially the enqueue operation of a standard queue, with the
 	 * additional restriction of a set's add operation.
 	 * 
-	 * @param value Item to add to the queue
-	 * @return      True if added, false if already present
+	 * @param value  element to be added to the end of this queue
+	 * @return true if the queue did not already contain the specified element
 	 */
 	public boolean Enqueue(E value) {
 		if (map.containsKey(value))
@@ -56,11 +61,19 @@ public class Queue<E> {
 			throw new IllegalStateException("Cannot Dequeue from an empty queue.");
 
 		Entry<E> first = this.head.next;
+		this.remove(first);
 		this.map.remove(first.value);
-		this.head.next = first.next;
-		this.head.next.prev = this.head;
 		this.size--;
 		return first.value;
+	}
+	
+	public boolean Remove(E value) {
+		if (!map.containsKey(value))
+			return false;
+		
+		remove(map.remove(value));
+		this.size--;
+		return true;
 	}
 	
 	public E Peek() {
