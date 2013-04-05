@@ -83,6 +83,19 @@ public class Queue<E> {
 		return this.head.next.value;
 	}
 	
+	public int Position(E value) {
+		if (!map.containsKey(value))
+			return -1;
+		
+		Entry<E> entry = map.get(value);
+		int position = 0;
+		while(entry.prev != this.head) {
+			position++;
+			entry = entry.prev;
+		}
+		return position;
+	}
+	
 	public int Size() {
 		return this.size;
 	}
